@@ -1,13 +1,14 @@
-import answersModel from "./answers";
+import AnswersModel from './answers';
+import { shuffle } from '../functions/arrays';
 
 export default class QuestionModel {
     #id: number;
     #enunciation: string;
-    #answers: answersModel[];
+    #answers: AnswersModel[];
     #isCorrect: boolean;
-    // #answered: boolean;
+    #answered: boolean;
 
-    constructor(id: number, enunciation: string, answers: answersModel[], isCorrect: boolean) {
+    constructor(id: number, enunciation: string, answers: AnswersModel[], isCorrect = false) {
         this.#id = id;
         this.#enunciation = enunciation;
         this.#answers = answers;
@@ -35,5 +36,33 @@ export default class QuestionModel {
             if (answer.revealed) return true;
         }
         return false;
+    }
+
+    shuffleAnswers(): QuestionModel {
+        const answersToShuffle = shuffle(this.#answers);
+
+        return new QuestionModel(this.#id, this.#enunciation, answersToShuffle, this.#isCorrect);
+    }
+
+    answerWith(index: number): QuestionModel {
+        const isCorrect = this.#answers[index]?.correct;
+        const answers = this.#answers.map((answer, i) => {
+            const answerSelected = index == i;
+            const shouldReveal = answerSelected || answer.correct;
+
+            return shouldReveal ? answer.reveal() : answer;
+        })
+
+        return new QuestionModel(this.#id, this.#enunciation, answers, isCorrect);
+    }
+
+    toObject(): object {
+        return {
+            id: this.#id,
+            enunciation: this.#enunciation,
+            answers: this.#answers.map(item => item.toObject()),
+            answered: this.answered,
+            isCorrect: this.#isCorrect
+        }
     }
 }

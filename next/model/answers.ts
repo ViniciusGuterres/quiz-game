@@ -1,4 +1,4 @@
-export default class answersModel {
+export default class AnswersModel {
     #value: string;
     #correct: boolean;
     #revealed: boolean;
@@ -7,6 +7,14 @@ export default class answersModel {
         this.#value = value;
         this.#correct = correct;
         this.#revealed = revealed;
+    }
+
+    static correctAnswer(value: string) {
+        return new AnswersModel(value, true);
+    }
+
+    static incorrectAnswer(value: string) {
+        return new AnswersModel(value, false);
     }
 
     get value() {
@@ -19,5 +27,17 @@ export default class answersModel {
 
     get revealed() {
         return this.#revealed;
+    }
+
+    reveal(): AnswersModel {
+        return new AnswersModel(this.#value, this.#correct, true);
+    }
+
+    toObject() {
+        return {
+            value: this.#value,
+            correct: this.#correct,
+            revealed: this.#revealed
+        }
     }
 }
