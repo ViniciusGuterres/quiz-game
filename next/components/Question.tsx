@@ -3,9 +3,13 @@ import style from '../styles/Question.module.css';
 
 import Enunciation from '../components/Enunciation';
 import Answer from "./Answer";
+import Timer from "./Timer";
 
 interface QuestionProps {
-    value: QuestionModel
+    value: QuestionModel,
+    onResponse: (index: number) => void,
+    timeOver: () => void,
+    durationToAnswer: number
 }
 
 export default function Question(props: QuestionProps) {
@@ -20,6 +24,7 @@ export default function Question(props: QuestionProps) {
                     index={i}
                     letter='A'
                     colorBgLetter='tomato'
+                    onResponse={props.onResponse}
                 />
             )
         })
@@ -27,6 +32,10 @@ export default function Question(props: QuestionProps) {
 
     return (
         <div className={style.question}>
+            <Timer
+                duration={props.durationToAnswer ?? 10}
+                timeOver={props.timeOver}
+            />
             <h1>Questão component</h1>
             <Enunciation
                 text={'vini'}
