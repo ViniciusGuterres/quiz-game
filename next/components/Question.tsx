@@ -37,14 +37,16 @@ export default function Question(props: QuestionProps) {
 
     return (
         <div className={style.question}>
-            <Timer
-                key={question.id}
-                duration={props.durationToAnswer ?? 10}
-                timeOver={props.timeOver}
-            />
-            <Enunciation
-                text={props.value.enunciation}
-            />
+            <div className={style.header}>
+                <Timer
+                    key={question.id}
+                    duration={props.durationToAnswer ?? 10}
+                    timeOver={props.timeOver}
+                />
+                <Enunciation
+                    text={props.value.enunciation}
+                />
+            </div>
 
             {renderAnswers()}
         </div>

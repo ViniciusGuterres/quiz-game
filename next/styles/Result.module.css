@@ -1,0 +1,17 @@
+.result {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    height: 40px;
+    margin-bottom: 30px;
+}
+
+.statics {
+    display: flex;
+    gap: 20px;
+}

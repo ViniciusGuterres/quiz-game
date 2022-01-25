@@ -14,7 +14,7 @@ export default function Timer(props: TimerProps) {
             <CountdownCircleTimer
                 size={120}
                 isPlaying
-                duration={10}
+                duration={1000}
                 onComplete={props.timeOver}
                 // colors={['#BCE596', '#F7B801', '#ED827A']}
                 // colorsTime={[7, 5, 2, 0]}

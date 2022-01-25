@@ -9,6 +9,8 @@
     border: none;
     margin-top: 40px;
     transition: all .2s ease-in-out;
+    height: 50px;
+    width: 300px;
 }
 
 .button:hover {
