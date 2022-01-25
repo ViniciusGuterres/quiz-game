@@ -56,6 +56,12 @@ export default class QuestionModel {
         return new QuestionModel(this.#id, this.#enunciation, answers, isCorrect);
     }
 
+    static fromObject(modelObj: QuestionModel): QuestionModel {
+        const answers = modelObj.answers.map(answer => AnswersModel.fromObject(answer));
+
+        return new QuestionModel(modelObj.id, modelObj.enunciation, answers, modelObj.isCorrect);
+    }
+
     toObject(): object {
         return {
             id: this.#id,

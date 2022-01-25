@@ -16,29 +16,34 @@ export default function Question(props: QuestionProps) {
     const question = props.value;
 
     function renderAnswers() {
-        return question.answers.map((answer, i) => {
-            return (
-                <Answer
-                    key={i}
-                    value={answer}
-                    index={i}
-                    letter='A'
-                    colorBgLetter='tomato'
-                    onResponse={props.onResponse}
-                />
-            )
-        })
+
+        if (question.answers && question.answers.length) {
+            return question.answers.map((answer, i) => {
+                return (
+                    <Answer
+                        key={`${question.id} - ${i}`}
+                        value={answer}
+                        index={i}
+                        letter='A'
+                        colorBgLetter='tomato'
+                        onResponse={props.onResponse}
+                    />
+                )
+            })
+        } else {
+            return null;
+        }
     }
 
     return (
         <div className={style.question}>
             <Timer
+                key={question.id}
                 duration={props.durationToAnswer ?? 10}
                 timeOver={props.timeOver}
             />
-            <h1>Questão component</h1>
             <Enunciation
-                text={'vini'}
+                text={props.value.enunciation}
             />
 
             {renderAnswers()}

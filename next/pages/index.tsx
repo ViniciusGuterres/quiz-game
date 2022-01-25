@@ -1,23 +1,48 @@
 import { useEffect, useRef, useState } from 'react';
-import Button from '../components/Button';
-import Question from '../components/Question';
 import AnswersModel from '../model/answers';
 import QuestionModel from '../model/question';
+import Quiz from '../components/Quiz';
 
-const questionMock = new QuestionModel(111, 'Qual é a melhor banda de rock do mundo ?', [
-  AnswersModel.correctAnswer('Queen'),
-  AnswersModel.incorrectAnswer('Beatles'),
-  AnswersModel.incorrectAnswer('Rolling Stone'),
-  AnswersModel.incorrectAnswer('Pink Floyd'),
-]);
+import { useRouter } from 'next/router';
+
+const BASE_URL = 'http://localhost:3000/api';
 
 export default function Home() {
-  const [question, setQuestion] = useState(questionMock);
+  const router = useRouter();
+
+  const [question, setQuestion] = useState<any>();
+  const [questionsIds, setQuestionsIds] = useState<number[]>([]);
+  const [correctsAnswereds, setCorrectsAnswereds] = useState<number>(0)
+
   const questionRef = useRef<QuestionModel>();
 
+  async function loadQuestionsIds() {
+    const resp = await fetch(`${BASE_URL}/quiz`);
+    const questionsIds = await resp.json();
+
+    setQuestionsIds(questionsIds);
+  }
+
+  async function loadQuestion(idQuestion: number) {
+    const resp = await fetch(`${BASE_URL}/questions/${idQuestion}`);
+
+    if (resp.status !== 204) {
+      const questionJson = await resp.json();
+
+      setQuestion(QuestionModel.fromObject(questionJson))
+    } else {
+      setQuestion([]);
+    }
+  }
+
   useEffect(() => {
-    questionRef.current = question;
-  }, [question]);
+    loadQuestionsIds();
+  }, []);
+
+  useEffect(() => {
+
+    questionsIds.length > 0 && loadQuestion(questionsIds[0]);
+  }, [questionsIds]);
 
   function onResponse(index: number) {
     console.log(index);
@@ -31,6 +56,47 @@ export default function Home() {
     }
   }
 
+  function questionAnswered(question: QuestionModel) {
+    setQuestion(question);
+
+    if (question.isCorrect) {
+      setCorrectsAnswereds(correctsAnswereds + 1);
+    }
+  }
+
+  function idNextQuestion() {
+    if (question) {
+      const nextId = questionsIds.indexOf(question.id) + 1;
+      return questionsIds[nextId];
+    }
+  }
+
+  function nextStep() {
+    const nextQuestionId = idNextQuestion();
+
+    if (nextQuestionId) {
+      goNextQuestion(nextQuestionId);
+    } else {
+      endGame();
+    }
+  }
+
+  function goNextQuestion(nextQuestionId: number) {
+    console.log('nextQuestionId', nextQuestionId);
+
+    loadQuestion(nextQuestionId);
+  }
+
+  function endGame() {
+    router.push({
+      pathname: '/result',
+      query: {
+        total: questionsIds.length,
+        corrects: correctsAnswereds
+      }
+    });
+  }
+
   return (
     <div style={{
       display: 'flex',
@@ -39,16 +105,17 @@ export default function Home() {
       height: '100vh',
       flexDirection: 'column'
     }}>
-      <Question
-        value={question}
-        onResponse={onResponse}
-        timeOver={timeOver}
-        durationToAnswer={5}
-      />
-
-      <Button 
-        text='NEXT'
-      />
+      {
+        question ?
+          <Quiz
+            question={question}
+            isLastQuestion={idNextQuestion() == undefined}
+            questionAnswered={questionAnswered}
+            nextStep={nextStep}
+          />
+          :
+          null
+      }
     </div>
   )
 }

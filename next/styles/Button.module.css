@@ -8,4 +8,9 @@
     cursor: pointer;
     border: none;
     margin-top: 40px;
+    transition: all .2s ease-in-out;
+}
+
+.button:hover {
+    transform: scale(1.1);
 }
