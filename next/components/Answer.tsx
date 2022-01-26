@@ -21,44 +21,43 @@ export default function Answer(props: AnswerProps) {
     const answer = props.value;
     const answerIndex = props.index;
 
-    return (
-        <div className={style.answer}>
-            <div className={style.card} onClick={() => props.onResponse(answerIndex)}>
-                {/* Case answer is reveal, show all back div, otherwise show front div */}
-                {
-                    answer.revealed ?
-                        <div className={style.back}>
-                            {
-                                answer.correct ?
-                                    <div className={style.correctAnswer}>
-                                        A resposta certa é...
-                                        <div className={style.value}>
-                                            {answer.value}
-                                        </div>
-                                    </div>
-                                    :
-                                    <div className={style.wrongAnswer}>
-                                        A resposta informada está errada...
-                                        <div className={style.value}>
-                                            {answer.value}
-                                        </div>
-                                    </div>
-                            }
-                        </div>
-                        :
-                        <div className={style.front}>
-                            <div
-                                className={style.letter}
-                                style={{ backgroundColor: letters[answerIndex].bgColor }}
-                            >
-                                {letters[answerIndex].value}
-                            </div>
+    const answerRevealed = answer.revealed ? style.answerRevealed : '';
 
-                            <div className={style.value}>
-                                {answer.value}
+    return (
+        <div className={style.answer} onClick={() => props.onResponse(answerIndex)}>
+            {/* Case answer is reveal, show all back div, otherwise show front div */}
+            <div className={`${style.card} ${answerRevealed}`}>
+                <div className={style.front}>
+                    <div
+                        className={style.letter}
+                        style={{ backgroundColor: letters[answerIndex].bgColor }}
+                    >
+                        {letters[answerIndex].value}
+                    </div>
+
+                    <div className={style.value}>
+                        {answer.value}
+                    </div>
+                </div>
+
+                <div className={style.back}>
+                    {
+                        answer.correct ?
+                            <div className={style.correctAnswer}>
+                                A resposta certa é...
+                                <div className={style.value}>
+                                    {answer.value}
+                                </div>
                             </div>
-                        </div>
-                }
+                            :
+                            <div className={style.wrongAnswer}>
+                                A resposta informada está errada...
+                                <div className={style.value}>
+                                    {answer.value}
+                                </div>
+                            </div>
+                    }
+                </div>
             </div>
         </div>
     )
