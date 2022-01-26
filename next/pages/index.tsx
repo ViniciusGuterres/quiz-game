@@ -45,7 +45,6 @@ export default function Home() {
   }, [questionsIds]);
 
   function onResponse(index: number) {
-    console.log(index);
     setQuestion(question.answerWith(index));
   }
 
@@ -82,8 +81,6 @@ export default function Home() {
   }
 
   function goNextQuestion(nextQuestionId: number) {
-    console.log('nextQuestionId', nextQuestionId);
-
     loadQuestion(nextQuestionId);
   }
 

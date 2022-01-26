@@ -1,7 +1,9 @@
 .enunciation {
     display: flex;
-    width: 50%;
+    width: 80%;
     height: 200px;
+    align-items: center;
+    justify-content: center;
 }
 
 .text {

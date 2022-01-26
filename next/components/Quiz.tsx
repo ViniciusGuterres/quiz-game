@@ -24,7 +24,7 @@ export default function Quiz(props: QuizProps) {
                 props.question ?
                     <Question
                         value={props.question}
-                        durationToAnswer={6}
+                        durationToAnswer={10}
                         onResponse={onResponse}
                         timeOver={props.nextStep}
                     />

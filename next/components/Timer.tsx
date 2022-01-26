@@ -10,11 +10,11 @@ interface TimerProps {
 
 export default function Timer(props: TimerProps) {
     return (
-        <div className={style.timer}>
+        <div className={style.timer} style={{ fontSize: '30px' }}>
             <CountdownCircleTimer
                 size={120}
                 isPlaying
-                duration={1000}
+                duration={props.duration}
                 onComplete={props.timeOver}
                 // colors={['#BCE596', '#F7B801', '#ED827A']}
                 // colorsTime={[7, 5, 2, 0]}
