@@ -1,4 +1,4 @@
-import AnswersModel from "../model/answers";
+import AnswersModel from "../model/answers"
 import style from '../styles/Answer.module.css';
 
 // the letters properties available
