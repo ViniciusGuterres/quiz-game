@@ -1,0 +1,10 @@
+{
+  "/_app": "pages/_app.js",
+  "/api/questionsBank": "pages/api/questionsBank.js",
+  "/api/questions/[id]": "pages/api/questions/[id].js",
+  "/api/quiz": "pages/api/quiz.js",
+  "/": "pages/index.js",
+  "/result": "pages/result.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js"
+}
